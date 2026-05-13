@@ -1,0 +1,192 @@
+{
+  "personal": {
+    "name": "Behdad Morsalpoor",
+    "email": "behdad.mor@gmail.com",
+    "phone": "+98 9366090699",
+    "whatsapp": "989366090699",
+    "linkedin": "https://linkedin.com/in/behdad-mor",
+    "portfolio": "https://behdadino.notion.site",
+    "location": "Tehran, Iran (Relocating to Barcelona, Spain — Oct 2026)"
+  },
+  "summary": "Senior Product Design Lead with 12+ years of experience scaling Fintech platforms (11M+ users). Combines a deep academic foundation in HCI and Cognitive Science with practical product strategy. Renowned for anticipating complex edge cases and ensuring technical feasibility through seamless alignment with Engineering and QA teams. A dedicated Design Advocate (podcast host) who translates advanced theoretical concepts into precise, high-fidelity flows that drive measurable OKRs.",
+  "experience": [
+    {
+      "id": "1",
+      "company": "Nobitex",
+      "companyDescription": "Leading Crypto Exchange in MENA, 11M+ Users",
+      "logo": "/logos/nobitex.png",
+      "position": "Product Design Lead",
+      "startDate": "2024-04",
+      "endDate": "Present",
+      "focus": "Leadership, Evidence-Based Resolution, High-Scale Strategy",
+      "description": [
+        "Led User Engagement Tribe: Directing 3 designers within a high-performance \"Product Trio\" culture, ensuring technical feasibility and aligning design initiatives with quarterly OKRs for an 11M+ user base.",
+        "Solved Critical Login Friction (HCI): Diagnosed a 52% login failure rate via qualitative research. Executed 3 iterative cycles to resolve 'bad password' patterns, boosting successful logins to 58% and reducing entry-point churn.",
+        "Orchestrated High-Traffic Scalability: Steered end-to-end UX for massive events (e.g., Hamster listing), handling 138,000 signups in 24h with an 80% trade success rate under extreme load."
+      ],
+      "industry": "Fintech / Crypto"
+    },
+    {
+      "id": "2",
+      "company": "Nobitex",
+      "companyDescription": "Leading Crypto Exchange in MENA, 11M+ Users",
+      "logo": "/logos/nobitex.png",
+      "position": "Senior Product Designer",
+      "startDate": "2023-04",
+      "endDate": "2024-04",
+      "focus": "System Architecture, Complex Flows, Design Ops",
+      "description": [
+        "Architected Complex Fintech Platforms: Engineered the Social Trading ecosystem (empowering 5k+ experts) and restructured the DEX (20k+ users), simplifying blockchain intricacies into intuitive, secure flows.",
+        "Established Scalable Design System: Built the foundational component library for a 10-person team, which standardized UI consistency and measurably accelerated the design-to-development handover."
+      ],
+      "industry": "Fintech / Crypto"
+    },
+    {
+      "id": "3",
+      "company": "Cafe Bazaar",
+      "companyDescription": "Largest Android App Store in Iran, 40M+ Users",
+      "logo": "/logos/cafe-bazaar.png",
+      "position": "Senior Product Designer",
+      "startDate": "2022-04",
+      "endDate": "2023-04",
+      "focus": "Fintech Scaling, B2B SaaS, Rapid MVP Development",
+      "description": [
+        "Optimized Fintech Ecosystem (Bazaar Pay): Architected a B2B transaction console for 18,000 active vendors to manage financial settlements. Conducted heuristic evaluations on the payment gateway, identifying friction points that led to a 25% increase in Direct Debit adoption.",
+        "Led Rapid MVP Launch (Fansee): Championed end-to-end product design of a celebrity-engagement platform (creator economy) within a cross-functional agile team. Delivered a fully functional product from concept to launch in just 3 months."
+      ],
+      "industry": "Fintech / Consumer"
+    },
+    {
+      "id": "4",
+      "company": "Krypton",
+      "companyDescription": "Crypto Exchange Development",
+      "logo": "/logos/krypton.png",
+      "position": "Product Design Lead",
+      "startDate": "2020-12",
+      "endDate": "2022-04",
+      "focus": "Advanced Trading Interfaces, HCI Research, Design Systems",
+      "description": [
+        "Conceptualized Advanced Trading Platform: Led end-to-end design of a pro-level exchange (Spot/Order Book) across Web, Mobile, and Tablet. Delivered a robust Style Guide with Dark/Light themes, ensuring visual consistency and accessibility.",
+        "Driven by Behavioral Research (HCI): Conducted contextual inquiry sessions with professional traders, revealing critical insights (e.g., prioritizing Order Book visibility over Charts) that reshaped the UI hierarchy."
+      ],
+      "industry": "Crypto"
+    },
+    {
+      "id": "5",
+      "company": "Agah e-Commerce Company",
+      "companyDescription": "B2B SaaS & E-commerce",
+      "logo": "/logos/agah.png",
+      "position": "Product Design Lead",
+      "startDate": "2020-01",
+      "endDate": "2020-12",
+      "focus": "Design Systems, B2B SaaS, Agile Delivery",
+      "description": [
+        "Architected Design System for B2B SaaS: Built the foundational Design System for a Product Information Management (PIM) platform, standardizing complex data visualization for rug vendors and enabling consistent UI scaling across the retailer network.",
+        "Accelerated Product Delivery: Led the rapid redesign and deployment of a localized Open-Source Crypto Exchange in under 2 months, meeting aggressive time-to-market goals."
+      ],
+      "industry": "E-commerce / Fintech"
+    },
+    {
+      "id": "6",
+      "company": "RM Innovation",
+      "companyDescription": "US-Based Agency | Remote",
+      "logo": "/logos/rm-innovation.png",
+      "position": "Senior Product Designer",
+      "startDate": "2019-05",
+      "endDate": "2020-02",
+      "focus": "E-commerce Optimization, Data-Driven Redesign, HCI",
+      "description": [
+        "Optimized E-commerce Funnel (Khazai Rugs): Reduced Home & Listing page bounce rates from 50% to ~30% by restructuring information architecture. Implemented a sequential selection pattern (progressive disclosure) for size/color attributes, significantly reducing cognitive load.",
+        "Deployed 4 Niche Platforms End-to-End: Designed 3 niche e-commerce sites and 1 service platform from scratch, creating comprehensive Style Guides. Utilized Heatmap analysis to realign service-page layouts with user intent."
+      ],
+      "industry": "E-commerce"
+    },
+    {
+      "id": "7",
+      "company": "Iran Fara Bourse",
+      "companyDescription": "Iran's Exclusive OTC Financial Market",
+      "logo": "/logos/iran-fara-bourse.png",
+      "position": "UI/UX Designer",
+      "startDate": "2018-08",
+      "endDate": "2019-06",
+      "focus": "Financial UX",
+      "description": [
+        "Designed user interfaces for Iran's exclusive OTC financial market platform, focusing on complex data visualization and accessibility for financial professionals."
+      ],
+      "industry": "Fintech"
+    },
+    {
+      "id": "8",
+      "company": "SHEZAN Accelerator",
+      "companyDescription": "Deep-Tech: Cognitive Science & Biotech",
+      "logo": "/logos/shezan.png",
+      "position": "UI/UX Designer",
+      "startDate": "2017-08",
+      "endDate": "2018-08",
+      "focus": "Deep-Tech Product Design",
+      "description": [
+        "Designed interfaces for deep-tech startups at the intersection of Cognitive Science and Biotech, applying HCI principles to emerging technology products."
+      ],
+      "industry": "Deep-Tech"
+    },
+    {
+      "id": "9",
+      "company": "Bestooran",
+      "companyDescription": "UGC Food Review Platform",
+      "logo": "/logos/bestooran.png",
+      "position": "Co-founder & Product Designer",
+      "startDate": "2017-01",
+      "endDate": "2017-12",
+      "focus": "Startup, Consumer Product",
+      "description": [
+        "Co-founded and led all product design for a user-generated content food review platform in Kerman, Iran. Responsible for end-to-end UX from concept through launch."
+      ],
+      "industry": "Consumer / Food-Tech"
+    },
+    {
+      "id": "10",
+      "company": "Movazi Pardaz",
+      "companyDescription": "Design Agency & Freelance",
+      "logo": "/logos/movazi-pardaz.png",
+      "position": "UI/UX & Graphic Designer",
+      "startDate": "2013-10",
+      "endDate": "2015-03",
+      "focus": "Agency Work, Visual Design",
+      "description": [
+        "Delivered UI/UX and graphic design for agency clients across branding, digital, and print projects in Kerman."
+      ],
+      "industry": "Agency / Freelance"
+    }
+  ],
+  "education": [
+    {
+      "institution": "Shahid Bahonar University of Kerman",
+      "location": "Kerman, Iran",
+      "degree": "B.E. in Computer Engineering (Hardware)",
+      "startDate": "2011-09",
+      "endDate": "2016-09",
+      "highlights": [
+        "Thesis: \"Algorithmic Assessment of Facial Aesthetics using Golden Ratio\" — explored the intersection of mathematical harmony and visual perception, creating an early foundation for data-driven design thinking.",
+        "Specialized in Hardware Engineering, fostering a rigorous understanding of System Architecture, logic design, and resource constraints."
+      ]
+    }
+  ],
+  "skills": {
+    "product": ["User-Centered Design (UCD)", "Information Architecture (IA)", "Design Systems", "Interaction Design (IxD)", "Complex Flow Optimization", "Technical Feasibility Assessment", "Fintech & DeFi Domain Expertise"],
+    "research": ["HCI Principles", "Cognitive Psychology in Design", "Data-Driven Design", "Usability Testing", "Heuristic Evaluation", "A/B Testing Strategy", "Accessibility (WCAG 2.1)"],
+    "tools": ["Figma (Advanced)", "Adobe Creative Suite", "AI-Driven Prototyping (Cursor, Vibe Coding)", "Miro & FigJam", "Jira & Confluence", "Basic HTML/CSS/React"],
+    "leadership": ["Design Leadership", "Cross-Functional Collaboration (Product Trio)", "OKR Definition & Strategy", "Agile & Scrum", "Mentorship & Team Growth", "Design Ops"]
+  },
+  "certifications": [
+    "Human-Computer Interaction — edX & Georgia Institute of Technology",
+    "UX Writing — Uxcel",
+    "Dynamic User Experience: Design and Usability — Interaction Design Foundation",
+    "User Experience: The Beginner's Guide — Interaction Design Foundation",
+    "Enterprise Design Thinking Co-Creator — IBM",
+    "Enterprise Design Thinking Practitioner — IBM"
+  ],
+  "languages": [
+    { "language": "Persian", "level": "Native" },
+    { "language": "English", "level": "Professional Working Proficiency" }
+  ]
+}
