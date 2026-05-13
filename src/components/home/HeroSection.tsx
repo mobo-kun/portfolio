@@ -218,13 +218,13 @@ export default function HeroSection() {
           <SocialButton href="https://linkedin.com/in/behdad-mor" label="LinkedIn">
             <LinkedInIcon />
           </SocialButton>
-          <SocialButton href="https://instagram.com/behdad" label="Instagram">
+          <SocialButton href="https://instagram.com/behdadxo" label="Instagram">
             <InstagramIcon />
           </SocialButton>
           <SocialButton href="https://substack.com/@behdad" label="Substack">
             <SubstackIcon />
           </SocialButton>
-          <SocialButton href="https://t.me/behdad" label="Telegram">
+          <SocialButton href="https://t.me/behdad_m" label="Telegram">
             <TelegramIcon />
           </SocialButton>
           <SocialButton href="https://wa.me/989366090699" label="WhatsApp">
@@ -246,7 +246,7 @@ export default function HeroSection() {
  * When `false`, the button is rendered disabled with a "Coming soon" tooltip
  * per the asset fallback strategy in the PRD.
  */
-const CV_PDF_AVAILABLE = false;
+const CV_PDF_AVAILABLE = true;
 
 function CVButton() {
   if (!CV_PDF_AVAILABLE) {
@@ -272,7 +272,7 @@ function CVButton() {
   return (
     <motion.a
       href="/cv.pdf"
-      download
+      download="Behdad_Morsalpoor_CV.pdf"
       whileHover={{ scale: 1.02 }}
       whileTap={{ scale: 0.98 }}
       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-cyan-500 text-white font-roboto text-sm font-medium hover:bg-cyan-400 hover:shadow-cyan-glow transition-all duration-200"
