@@ -1,5 +1,17 @@
 "use client";
 
+/**
+ * @file BentoGrid.tsx
+ * @description Featured case studies section displayed as a bento-style grid.
+ *
+ * Key features:
+ * - Reads project titles from data/bento-config.json
+ * - 3D tilt effect on hover via mousemove (perspective + rotateX/Y)
+ * - First card spans 2 columns on md+ screens (bento layout)
+ * - PlaceholderArt shown until real thumbnails are available
+ * - whileInView staggered entrance animation per card
+ */
+
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
@@ -12,6 +24,14 @@ type Card = {
   image?: string;
 };
 
+/**
+ * A case study card with a 3D tilt effect driven by mouse position.
+ * Tilt is applied via inline CSS transform (perspective + rotateX/Y).
+ *
+ * @param props.card - Card data (title + optional image URL)
+ * @param props.className - Extra Tailwind classes (used for bento spanning)
+ * @param props.href - Target URL for the card link
+ */
 function TiltCard({
   card,
   className = "",
@@ -24,6 +44,7 @@ function TiltCard({
   const ref = useRef<HTMLAnchorElement>(null);
   const [transform, setTransform] = useState<string>("");
 
+  /** Compute rotateX/Y from the cursor offset relative to the card centre */
   function handleMouseMove(e: React.MouseEvent<HTMLAnchorElement>) {
     const el = ref.current;
     if (!el) return;
@@ -32,6 +53,7 @@ function TiltCard({
     const y = e.clientY - rect.top;
     const cx = rect.width / 2;
     const cy = rect.height / 2;
+    // Max ±6° tilt — subtle enough to feel premium, not dizzying
     const rotateY = ((x - cx) / cx) * 6;
     const rotateX = -((y - cy) / cy) * 6;
     setTransform(
@@ -41,6 +63,7 @@ function TiltCard({
     );
   }
 
+  /** Reset tilt smoothly when the cursor leaves the card */
   function handleLeave() {
     setTransform("perspective(900px) rotateX(0deg) rotateY(0deg)");
   }
@@ -84,6 +107,12 @@ function TiltCard({
   );
 }
 
+/**
+ * Fallback thumbnail shown when no real image is available for a case study.
+ * Uses a radial gradient to evoke depth, with the project title centred.
+ *
+ * @param props.title - Project title to display in the placeholder
+ */
 function PlaceholderArt({ title }: { title: string }) {
   return (
     <div
@@ -93,6 +122,7 @@ function PlaceholderArt({ title }: { title: string }) {
           "linear-gradient(135deg, var(--page-surface) 0%, var(--page-bg) 100%)",
       }}
     >
+      {/* Subtle cyan radial highlights at two corners */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div
           className="absolute inset-0"
@@ -109,12 +139,17 @@ function PlaceholderArt({ title }: { title: string }) {
   );
 }
 
+/**
+ * Bento grid section — renders featured case studies from bento-config.json.
+ * First card spans 2 columns on md+ (bento layout). All cards have whileInView
+ * staggered entrance animations.
+ */
 export default function BentoGrid() {
   const titles = bentoConfig.featuredProjects ?? [];
   const cards: Card[] = titles.map((t: string) => ({ title: t }));
 
   return (
-    <section className="relative px-6 py-20 md:py-28">
+    <section className="relative px-6 py-20 md:py-28 border-t border-border-card">
       <div className="max-w-6xl mx-auto">
         <motion.div
           initial={{ opacity: 0, y: 10 }}

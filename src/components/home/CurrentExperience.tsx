@@ -1,9 +1,27 @@
 "use client";
 
+/**
+ * @file CurrentExperience.tsx
+ * @description Current role section on the home page.
+ *
+ * Key features:
+ * - Reads index [0] (most recent entry) from data/resume.json
+ * - Split layout: abstract SVG illustration left, role details right
+ * - Formats ISO date strings (YYYY-MM) to human-readable month/year
+ * - Displays first 2 bullet points from the description array
+ * - whileInView slide-in entrance animations for both columns
+ */
+
 import Link from "next/link";
 import { motion } from "framer-motion";
 import resumeData from "../../../data/resume.json";
 
+/**
+ * Converts an ISO partial date string or "Present" to a human-readable label.
+ *
+ * @param dateStr - Either "YYYY-MM" (e.g. "2023-01") or the literal "Present"
+ * @returns Formatted string such as "Jan 2023" or "Present"
+ */
 function formatDate(dateStr: string): string {
   if (dateStr === "Present") return "Present";
   const [year, month] = dateStr.split("-");
@@ -11,7 +29,10 @@ function formatDate(dateStr: string): string {
   return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
 }
 
-/* Abstract illustration placeholder (left column) */
+/**
+ * Abstract SVG illustration rendered in the left column of the experience card.
+ * Purely decorative — conveys a futuristic / orbital aesthetic.
+ */
 function AbstractIllustration() {
   return (
     <div className="w-full h-full flex items-center justify-center min-h-[200px]">
@@ -23,23 +44,28 @@ function AbstractIllustration() {
         aria-hidden="true"
         className="opacity-60"
       >
-        {/* Outer ring */}
+        {/* Outer ring — dashed orbital path */}
         <circle cx="90" cy="80" r="70" stroke="currentColor" strokeWidth="1" strokeDasharray="6 4" className="text-cyan-500" />
         {/* Inner ring */}
         <circle cx="90" cy="80" r="45" stroke="currentColor" strokeWidth="1" className="text-cyan-900" />
         {/* Centre dot */}
         <circle cx="90" cy="80" r="8" fill="currentColor" className="text-cyan-500" opacity="0.4" />
-        {/* Cross lines */}
+        {/* Cross-hair lines */}
         <line x1="20" y1="80" x2="160" y2="80" stroke="currentColor" strokeWidth="0.8" className="text-border-card" />
         <line x1="90" y1="10" x2="90" y2="150" stroke="currentColor" strokeWidth="0.8" className="text-border-card" />
-        {/* Orbiting dot */}
+        {/* Orbiting dot at top of outer ring */}
         <circle cx="90" cy="35" r="5" fill="currentColor" className="text-cyan-400" />
       </svg>
     </div>
   );
 }
 
+/**
+ * Displays the most recent work experience entry from resume.json.
+ * Intended for the home page as a teaser with a "View Full CV" link.
+ */
 export default function ExperienceSection() {
+  // Always render the first (most recent) entry
   const current = resumeData.experience[0];
   const { position, company, companyDescription, startDate, endDate, description } = current;
 
@@ -74,10 +100,12 @@ export default function ExperienceSection() {
           {companyDescription && (
             <p className="font-roboto text-xs text-text-secondary/70 mb-1">{companyDescription}</p>
           )}
+          {/* Human-readable date range */}
           <p className="font-roboto text-sm text-text-secondary mb-6">
             {formatDate(startDate)} – {formatDate(endDate)}
           </p>
 
+          {/* First 2 bullet points from description array */}
           <ul className="space-y-3 mb-8">
             {description.slice(0, 2).map((bullet, i) => (
               <li key={i} className="flex items-start gap-3">

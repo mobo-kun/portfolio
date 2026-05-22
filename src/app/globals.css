@@ -32,7 +32,7 @@
   /* Brand cyan */
   --color-cyan-500: #0097A7;
   --color-cyan-400: #00B8D4;
-  --color-cyan-900: #00333A;
+  --color-cyan-900: #006B7F;
 
   /* Custom shadow */
   --shadow-cyan-glow: 0 0 24px rgba(0, 151, 167, 0.45);
@@ -40,6 +40,11 @@
   /* Custom font families (populated by next/font CSS vars) */
   --font-intel: var(--font-intel-one-mono), ui-monospace, monospace;
   --font-roboto: var(--font-roboto-mono), ui-monospace, monospace;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
 }
 
 html {

@@ -1,5 +1,17 @@
 "use client";
 
+/**
+ * @file RecommendationsCarousel.tsx
+ * @description Infinitely scrolling marquee carousel of recommendation cards.
+ *
+ * Key features:
+ * - Auto-scrolling CSS marquee animation (avoids Framer Motion snap-to-0 on resume)
+ * - Hover pauses the animation via animationPlayState
+ * - Duplicate array so the loop is visually seamless
+ * - Clicking name or avatar opens the person's LinkedIn in a new tab
+ * - AvatarPlaceholder renders initials when no image is provided
+ */
+
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
@@ -13,6 +25,10 @@ type Recommendation = {
   image?: string;
 };
 
+/**
+ * Hardcoded recommendations array.
+ * Each entry includes a LinkedIn URL used for the clickable name/avatar link.
+ */
 const RECOMMENDATIONS: Recommendation[] = [
   {
     name: "Sara Mohammadi",
@@ -58,6 +74,10 @@ const RECOMMENDATIONS: Recommendation[] = [
   },
 ];
 
+/**
+ * Circular avatar showing the person's initials when no photo is available.
+ * @param props.name - Full name; first letter of each word is used as initials
+ */
 function AvatarPlaceholder({ name }: { name: string }) {
   const initials = name
     .split(/\s+/)
@@ -76,6 +96,13 @@ function AvatarPlaceholder({ name }: { name: string }) {
   );
 }
 
+/**
+ * A single recommendation card.
+ * Both the avatar and the person's name are wrapped in an anchor that opens
+ * their LinkedIn profile in a new tab.
+ *
+ * @param props.rec - Recommendation data object
+ */
 function RecommendationCard({ rec }: { rec: Recommendation }) {
   return (
     <article className="flex-shrink-0 w-[320px] sm:w-[380px] bg-surface border border-border-card rounded-xl p-6 hover:border-cyan-500 transition-colors duration-300">
@@ -88,6 +115,7 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
         {rec.quote}
       </p>
       <div className="flex items-center gap-3">
+        {/* Avatar link — opens LinkedIn in a new tab */}
         <a
           href={rec.linkedIn}
           target="_blank"
@@ -107,6 +135,7 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
           )}
         </a>
         <div className="min-w-0">
+          {/* Name link — opens LinkedIn in a new tab */}
           <a
             href={rec.linkedIn}
             target="_blank"
@@ -124,10 +153,19 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
   );
 }
 
+/**
+ * Infinitely auto-scrolling carousel section.
+ *
+ * Animation approach: a CSS `@keyframes marquee` animation (defined in globals.css)
+ * translates the track from 0 to -50% (since the array is duplicated, -50% brings
+ * us back to an identical visual state, creating a seamless loop). Using CSS instead
+ * of Framer Motion `animate={{ x: [...] }}` avoids the snap-back-to-0 bug that
+ * occurs when the animation is paused and then resumed.
+ */
 export default function RecommendationsCarousel() {
   const [paused, setPaused] = useState(false);
 
-  // Duplicate the array so the marquee loop is seamless
+  // Duplicate the array so the marquee loop is seamless (track is 2× width)
   const loop = [...RECOMMENDATIONS, ...RECOMMENDATIONS];
 
   return (
@@ -148,29 +186,28 @@ export default function RecommendationsCarousel() {
         </motion.div>
       </div>
 
-      {/* Marquee track */}
+      {/* Marquee track — pause on hover via animationPlayState */}
       <div
         className="relative"
         onMouseEnter={() => setPaused(true)}
         onMouseLeave={() => setPaused(false)}
       >
-        {/* Edge fade masks */}
+        {/* Edge fade masks — hide the hard edges of the scrolling track */}
         <div className="pointer-events-none absolute inset-y-0 left-0 w-16 md:w-24 z-10 bg-gradient-to-r from-bg to-transparent" />
         <div className="pointer-events-none absolute inset-y-0 right-0 w-16 md:w-24 z-10 bg-gradient-to-l from-bg to-transparent" />
 
-        <motion.div
+        {/* CSS animation instead of Framer Motion — avoids snap-to-0 on resume */}
+        <div
           className="flex gap-5 w-max"
-          animate={{ x: paused ? undefined : ["0%", "-50%"] }}
-          transition={{
-            ease: "linear",
-            duration: 40,
-            repeat: Infinity,
+          style={{
+            animation: "marquee 40s linear infinite",
+            animationPlayState: paused ? "paused" : "running",
           }}
         >
           {loop.map((rec, i) => (
             <RecommendationCard key={`${rec.name}-${i}`} rec={rec} />
           ))}
-        </motion.div>
+        </div>
       </div>
     </section>
   );

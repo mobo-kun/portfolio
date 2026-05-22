@@ -1,5 +1,16 @@
 "use client";
 
+/**
+ * @file ThemeToggle.tsx
+ * @description Light/dark mode toggle button for the global header.
+ *
+ * Key features:
+ * - Uses next-themes resolvedTheme for reliable SSR/hydration safety
+ * - useIsMounted prevents hydration mismatch by deferring rendering to client
+ * - Renders a sun icon in dark mode and a moon icon in light mode
+ * - Framer Motion whileHover/whileTap scale feedback
+ */
+
 import { useTheme } from "next-themes";
 import { useSyncExternalStore } from "react";
 import { motion } from "framer-motion";
@@ -18,6 +29,10 @@ function useIsMounted() {
   );
 }
 
+/**
+ * Theme toggle button — cycles between dark and light mode.
+ * Renders a placeholder div of the same size before hydration to avoid layout shift.
+ */
 export default function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
   const mounted = useIsMounted();

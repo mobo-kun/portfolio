@@ -1,5 +1,17 @@
 "use client";
 
+/**
+ * @file Header.tsx
+ * @description Fixed global navigation header present on every page.
+ *
+ * Key features:
+ * - Backdrop blur with border-bottom for a floating glass effect
+ * - Active link detection using usePathname()
+ * - Desktop: smooth animated underline on hover; active link in cyan-500
+ * - Mobile: hamburger button → Framer Motion full-height slide-in drawer from right
+ * - Theme toggle on the right side of the header
+ */
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -7,6 +19,10 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import ThemeToggle from "./ThemeToggle";
 
+/**
+ * All primary navigation links.
+ * Used in both the desktop nav bar and the mobile drawer.
+ */
 const NAV_LINKS = [
   { href: "/", label: "Home" },
   { href: "/case-studies", label: "Case Studies" },
@@ -15,6 +31,10 @@ const NAV_LINKS = [
   { href: "/contact", label: "Contact" },
 ];
 
+/**
+ * Global fixed header component.
+ * Renders the logo, desktop navigation, theme toggle, and mobile drawer.
+ */
 export default function Header() {
   const pathname = usePathname();
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -34,6 +54,7 @@ export default function Header() {
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-7">
             {NAV_LINKS.map(({ href, label }) => {
+              // Home is an exact match; all other links use startsWith
               const active =
                 href === "/" ? pathname === "/" : pathname.startsWith(href);
               return (
@@ -47,6 +68,7 @@ export default function Header() {
                   }`}
                 >
                   {label}
+                  {/* Animated underline: full-width when active, 0→full on hover */}
                   <span
                     className={`absolute -bottom-0.5 left-0 h-px bg-cyan-500 transition-all duration-300 ${
                       active ? "w-full" : "w-0 group-hover:w-full"
@@ -59,7 +81,7 @@ export default function Header() {
 
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            {/* Mobile hamburger */}
+            {/* Mobile hamburger — only visible below md breakpoint */}
             <motion.button
               className="md:hidden w-9 h-9 flex items-center justify-center rounded-lg border border-border-card text-text-secondary"
               onClick={() => setDrawerOpen(true)}
@@ -73,11 +95,11 @@ export default function Header() {
         </div>
       </header>
 
-      {/* Mobile drawer */}
+      {/* Mobile drawer — slides in from the right */}
       <AnimatePresence>
         {drawerOpen && (
           <>
-            {/* Backdrop */}
+            {/* Semi-transparent backdrop — click to close */}
             <motion.div
               className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm md:hidden"
               initial={{ opacity: 0 }}
