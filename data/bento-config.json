@@ -1,7 +1,39 @@
 {
-  "featuredProjects": [
-    "Invi Micro-investment Ghalak",
-    "Crypto Dashboard Overhaul",
-    "Onboarding Gamification"
+  "tiles": [
+    {
+      "id": "tile-a",
+      "position": "top-left",
+      "title": "Invi Micro-investment Ghalak",
+      "href": "/case-studies/invi",
+      "alt": "Invi Micro-investment Ghalak cover image"
+    },
+    {
+      "id": "tile-b",
+      "position": "top-right",
+      "title": "Crypto Dashboard Overhaul",
+      "href": "/case-studies/crypto-dashboard",
+      "alt": "Crypto Dashboard Overhaul cover image"
+    },
+    {
+      "id": "tile-c",
+      "position": "mid-right",
+      "title": "Onboarding Gamification",
+      "href": "/case-studies/onboarding-gamification",
+      "alt": "Onboarding Gamification cover image"
+    },
+    {
+      "id": "tile-d",
+      "position": "bottom-left",
+      "title": "Design System",
+      "href": "/case-studies/design-system",
+      "alt": "Design System cover image"
+    },
+    {
+      "id": "tile-e",
+      "position": "bottom-right-wide",
+      "title": "Fintech Mobile Redesign",
+      "href": "/case-studies/fintech-mobile",
+      "alt": "Fintech Mobile Redesign cover image"
+    }
   ]
 }
