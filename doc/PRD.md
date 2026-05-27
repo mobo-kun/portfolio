@@ -170,9 +170,18 @@ All values below must be defined in `tailwind.config.ts`. **No hardcoded hex val
 
 #### Current Experience
 - Reads the **first entry** (index 0) from `data/resume.json`
-- Layout: 1:1 split — abstract illustration left, role details right
+- Layout: **5-col / 7-col split** (`lg:grid-cols-12`) — skill carousel left, role details right
 - Displays: position, company, dates, first 2 bullet points of description
 - `View Full CV →` text link
+
+**Skill Carousel (v6 — vertical cylinder drum-roll)**
+- 7 skill cards (Design Systems, Interaction Design, Behavioral Research, Product Strategy, UX Research, Design Leadership, Fintech & DeFi), each with a unique SVG geo-pattern background and neon icon
+- `EXTENDED` array: 2 clone-cards before + 7 real cards + 2 clone-cards after (11 total) — enables invisible circular wrapping in both directions
+- Viewport height: 400 px (`CARD_H 300 + PEEK 50×2`); `10 %` peek of prev/next card visible through gradient fade masks at top and bottom
+- **Circular queue**: always scrolls in one direction (like a cylinder). After card 07 the list springs to `clone-01`, spring settles, then teleports to `real-01` invisibly. Counter reads `01/07` throughout — no backward jump ever visible
+- Auto-advance every 5 s; drag/swipe (mouse + touch, velocity-aware) also advances
+- 3-D tilt on hover (±10° rotateX/Y, perspective 800 px); tilt disabled while dragging
+- Section-wide mouse-following glow (cyan, `blur-[120px]`, covers both carousel and text columns)
 
 #### Recommendations Carousel
 - Infinitely auto-scrolling marquee (Framer Motion)

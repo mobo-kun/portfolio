@@ -313,7 +313,7 @@
 ---
 
 ## Phase 4 — Home Page: Current Experience
-> Goal: Dynamically show the most recent role from resume.json with a clean split layout.
+> Goal: Dynamically show the most recent role from resume.json with a fancy split layout and animated skill carousel.
 
 ---
 
@@ -323,13 +323,39 @@
 - Import `data/resume.json`, read entry at index `[0]`
 - Display: `position`, `company`, `companyDescription`, date range, first 2 `description` bullets
 - `formatDate()` helper: `"2024-04"` → `"Apr 2024"`, `"Present"` passes through
-- Abstract SVG illustration on the left column
+- Skill carousel on the left column (5/12 cols on desktop)
 - `View Full CV →` link to `/cv`
 
 **AC:**
 - Data reads dynamically from `resume.json` — changing JSON updates UI
 - Date range formatted correctly
 - Both columns visible side-by-side on desktop, stacked on mobile
+
+---
+
+### [x] 4.2 — Skill Carousel (vertical cylinder, v6)
+
+**Steps:**
+- 7 skill cards with SVG geo-pattern backgrounds and neon line-art icons
+- `EXTENDED` array: `[clone-06, clone-07, real-01…real-07, clone-01, clone-02]` (11 cards)
+- Constants: `CARD_H=300`, `GAP=14`, `PEEK=50`, `FADE_H=18`, `CONT_H=400`
+- Single `useMotionValue` drives list `y`; `animate()` with spring `{stiffness:300, damping:34}`
+- **Circular wrap**: `animate().then(callback)` fires after spring settles → `listYMV.set()` teleports from clone to real card — 0 frames rendered mid-jump, wrap is invisible
+- `FIRST_REAL=2`, `LAST_REAL=8`; forward clone at pos 9, backward clone at pos 1
+- `displayIdx = (index - FIRST_REAL + REAL_COUNT*100) % REAL_COUNT` — correct counter on clones too
+- Auto-advance: `setInterval 5000ms`, capped at `LAST_REAL+1`
+- Drag/swipe: Framer Motion `onPan*` events (mouse + touch), velocity-aware snap, `touchAction:"none"`
+- 3-D tilt: `±10° rotateX/Y` on hover, disabled while dragging
+- Section glow: `useMotionValue + useSpring + useTransform` at `ExperienceSection` level, tracks mouse across both columns
+
+**AC:**
+- ✅ 11-card EXTENDED array renders (E2E confirmed)
+- ✅ Counter sequences correctly: 01→02→03→04→05→06→07→01 (no backward jump)
+- ✅ Forward wrap: index 9 (clone-01) → counter "01/07", card "Design Systems" ✓
+- ✅ Backward wrap: index 1 (clone-07) → counter "07/07", card "Fintech & DeFi" ✓
+- ✅ Drag and touch advance/retreat card with velocity snap
+- ✅ 10% of prev/next card visible through fade masks at top and bottom
+- ✅ TypeScript: `npx tsc --noEmit` passes with 0 errors
 
 ---
 
