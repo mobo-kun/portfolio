@@ -4,6 +4,10 @@
  * @file RecommendationsCarousel.tsx
  * @description Infinitely scrolling marquee carousel of recommendation cards.
  *
+ * Data source: GET /api/recommendations (Supabase).
+ * Fallback: HARDCODED_RECOMMENDATIONS — used when Supabase is not configured
+ * or returns an empty array, so the section is never empty in development.
+ *
  * Key features:
  * - Auto-scrolling CSS marquee animation (avoids Framer Motion snap-to-0 on resume)
  * - Hover pauses the animation via animationPlayState
@@ -12,7 +16,7 @@
  * - AvatarPlaceholder renders initials when no image is provided
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Quote } from "lucide-react";
 
@@ -26,10 +30,11 @@ type Recommendation = {
 };
 
 /**
- * Hardcoded recommendations array.
- * Each entry includes a LinkedIn URL used for the clickable name/avatar link.
+ * Fallback data — shown while Supabase loads, or permanently if Supabase
+ * is not configured / returns empty. Replace these with real entries in
+ * Supabase and they will appear automatically.
  */
-const RECOMMENDATIONS: Recommendation[] = [
+const HARDCODED_RECOMMENDATIONS: Recommendation[] = [
   {
     name: "Sara Mohammadi",
     role: "Engineering Manager, Nobitex",
@@ -164,9 +169,25 @@ function RecommendationCard({ rec }: { rec: Recommendation }) {
  */
 export default function RecommendationsCarousel() {
   const [paused, setPaused] = useState(false);
+  const [items, setItems] = useState<Recommendation[]>(HARDCODED_RECOMMENDATIONS);
+
+  // Fetch live data from Supabase via the API route on mount.
+  // If the fetch fails or returns empty, the hardcoded fallback stays in place.
+  useEffect(() => {
+    fetch("/api/recommendations")
+      .then((res) => res.json())
+      .then(({ data }: { data: Recommendation[] }) => {
+        if (Array.isArray(data) && data.length > 0) {
+          setItems(data);
+        }
+      })
+      .catch(() => {
+        // Silently keep hardcoded fallback — Supabase not configured yet
+      });
+  }, []);
 
   // Duplicate the array so the marquee loop is seamless (track is 2× width)
-  const loop = [...RECOMMENDATIONS, ...RECOMMENDATIONS];
+  const loop = [...items, ...items];
 
   return (
     <section className="relative py-20 md:py-28 border-t border-border-card overflow-hidden">
