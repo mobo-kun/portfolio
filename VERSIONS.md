@@ -19,7 +19,8 @@
 
 | Version | Commit | Date | What changed |
 |---------|--------|------|--------------|
-| **v0.6.0** | `0d6b861` | 2026-05-27 | **Skill carousel v6** — vertical cylinder drum-roll, invisible circular wrap via `animate().then()`, drag/swipe (mouse + touch), 3-D tilt, section-wide mouse glow, 5/7 desktop split |
+| **v0.7.0** | `c30d2b0` | 2026-05-28 | **Recommendations → Supabase** — API route + server-side client, 60s ISR cache, hardcoded fallback, `@supabase/supabase-js` installed |
+| v0.6.0 | `0d6b861` | 2026-05-27 | **Skill carousel v6** — vertical cylinder drum-roll, invisible circular wrap via `animate().then()`, drag/swipe (mouse + touch), 3-D tilt, section-wide mouse glow, 5/7 desktop split |
 | v0.5.0 | `6f11379` | 2026-05-22 | **Bento grid** — asymmetric 5-tile CSS grid, 3 responsive image crops, 3D tilt, desktop hover overlay, mobile always-visible scrim, staggered whileInView entrance |
 | v0.4.1 | `206c118` | 2026-05-22 | Docs — rewrote README for personal portfolio |
 | v0.4.0 | `c440b5d` | 2026-05-22 | **Hero complete** — ProfileOrb v2 (mouse-tracking border), responsive viewport tiers, scroll indicator, full CTA row |
