@@ -47,11 +47,41 @@
   to   { transform: translateX(-50%); }
 }
 
+/* Skeleton shimmer — moves a bright band left-to-right over muted bg.
+   @media prefers-reduced-motion disables it (falls back to static colour). */
+@keyframes skeleton-shimmer {
+  0%   { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .skeleton-shimmer {
+    background: linear-gradient(
+      90deg,
+      var(--page-border)   25%,
+      var(--page-surface)  50%,
+      var(--page-border)   75%
+    );
+    background-size: 200% auto;
+    animation: skeleton-shimmer 1.8s ease-in-out infinite;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton-shimmer {
+    background: var(--page-border);
+  }
+}
+
 html {
   scroll-behavior: smooth;
+  /* Prevent any overflowing element from creating horizontal page scroll.
+     Belt-and-suspenders for iOS Safari: set on both html AND body. */
+  overflow-x: hidden;
 }
 
 body {
+  overflow-x: hidden; /* iOS Safari needs this on body too */
   background-color: var(--page-bg);
   color: var(--page-text);
   font-family: var(--font-roboto-mono), ui-monospace, monospace;

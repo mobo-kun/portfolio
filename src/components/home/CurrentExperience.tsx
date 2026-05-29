@@ -512,7 +512,7 @@ export default function ExperienceSection() {
     <section
       ref={sectionRef}
       onMouseMove={handleSectionMouseMove}
-      className="px-6 md:px-10 py-20 border-t border-border-card overflow-visible relative"
+      className="px-6 md:px-10 py-20 border-t border-border-card overflow-hidden relative"
     >
       {/* ── Section-spanning glow — follows cursor across carousel AND text ── */}
       <motion.div

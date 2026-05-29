@@ -360,7 +360,7 @@
 ---
 
 ## Phase 5 — Home Page: Recommendations Carousel
-> Goal: An infinitely scrolling marquee of kind words that pauses on hover.
+> Goal: An infinitely scrolling marquee of kind words, backed by Supabase, with a read-more modal and robust loading/error states.
 
 ---
 
@@ -372,12 +372,14 @@
 - CSS `@keyframes marquee` animation (`translateX(0)` → `translateX(-50%)`) in `globals.css`
 - Apply via inline `style={{ animation: "marquee 40s linear infinite" }}`
 - `animationPlayState: paused` on hover — no snap to start on resume
+- Touch fix: `setPaused(false)` on `onReadMore` so a touch-triggered hover-pause never outlives the sheet
 
 **AC:**
-- Carousel scrolls continuously without pause or jump
-- Hover pauses exactly where it is — resumes from same position
-- No overflow or horizontal scrollbar on the page
-- Duplicated cards create a seamless loop (no blank gap)
+- ✅ Carousel scrolls continuously without pause or jump
+- ✅ Hover pauses exactly where it is — resumes from same position
+- ✅ No overflow or horizontal scrollbar on the page
+- ✅ Duplicated cards create a seamless loop (no blank gap)
+- ✅ Marquee resumes correctly after bottom sheet is closed on mobile
 
 ---
 
@@ -385,14 +387,89 @@
 
 **Steps:**
 - `RecommendationCard` component: quote text, person name, role/company, avatar placeholder
-- Avatar: initials badge (`rounded-full`, `bg-cyan-900`, white text) as fallback
+- `Avatar` component: renders `<img onError>` falling back to `AvatarPlaceholder` — handles broken URLs from Supabase
 - Name and avatar wrapped in `<a target="_blank">` linking to LinkedIn URL
 - `article` semantic element per card
+- Quotes clamped to 4 lines; `Read full →` text button shown when `quote.length > 120` chars
 
 **AC:**
-- Clicking name or avatar opens the correct LinkedIn profile in a new tab
-- Cards have consistent height — no misalignment in the track
-- Quote text does not overflow the card
+- ✅ Clicking name or avatar opens the correct LinkedIn profile in a new tab
+- ✅ Cards have consistent height — no misalignment in the track
+- ✅ Quote text does not overflow the card
+- ✅ `Read full →` appears only on long quotes; absent on short ones
+
+---
+
+### [x] 5.3 — Supabase Integration
+
+**Steps:**
+- Install `@supabase/supabase-js`
+- `src/lib/supabase.ts` — server-side client using `SUPABASE_SERVICE_ROLE_KEY`
+- `src/lib/supabase.types.ts` — hand-written `recommendations` table type
+- API route `GET /api/recommendations` — selects active rows ordered by `sort_order`, 60s ISR
+- Client fetches on mount; swaps in live data if non-empty, keeps hardcoded if empty
+
+**AC:**
+- ✅ Adding a row to Supabase `recommendations` table appears on the live site within 60s
+- ✅ Empty Supabase → hardcoded fallback shown (no error)
+- ✅ Service-role key never exposed to the browser
+- ✅ TypeScript: `npx tsc --noEmit` passes with 0 errors
+
+---
+
+### [x] 5.4 — Read-More Modal / Bottom Sheet
+
+**Steps:**
+- Modal type chosen via lazy `useState(() => window.innerWidth < 768)` — synchronous, no flash
+- **Mobile bottom sheet:**
+  - `fixed inset-0 flex flex-col justify-end overflow-hidden` outer container prevents width bleed
+  - 3-column flex header: `[spacer | drag pill | close button]` — pill and button vertically aligned
+  - Separate scroll container with `overflow-y-auto` and `touchAction:"pan-y"`
+  - `useScrollLock` hook: `body { position:fixed; top:-scrollY }` — works on iOS Safari
+  - Drag-to-dismiss: `drag="y"`, `dragConstraints={{top:0,bottom:0}}`, `dragElastic:{{bottom:0.4}}`; dismiss on offset > 100px or velocity > 400px/s
+  - `onPointerDown stopPropagation` on scroll body prevents drag while reading content
+- **Desktop modal:**
+  - `perspective:1200px` on container; `rotateX:5→0` 3-D flip-up spring entry
+  - Clean scale+opacity exit (no rotateX on dismiss)
+- **Transitions ("signal materialising"):**
+  - Backdrop: `backdrop-blur-md`
+  - Sheet: cyan edge shimmer `scaleX:0→1`, drag pill scale, content `y:14→0` stagger — all with `[0.16,1,0.3,1]` expo-out
+  - Modal: animated top shimmer, content fade-up with delay
+- All interactive elements named with `data-slot` attributes
+
+**AC:**
+- ✅ Bottom sheet opens correct variant synchronously (no desktop→mobile flash)
+- ✅ Close button and drag pill aligned on same baseline
+- ✅ Body scroll locked on open (iOS Safari tested); scroll position restored on close
+- ✅ Drag down >100px or flick dismisses; short drag springs back
+- ✅ Scroll inside content body works independently of drag gesture
+- ✅ Content behind sheet does not scroll while sheet is open
+- ✅ Marquee pauses while modal is open; resumes on close
+- ✅ All `data-slot` elements selectable by name in DevTools / tests
+
+---
+
+### [x] 5.5 — Skeleton Loading, Error State & Fetch Resilience
+
+**Steps:**
+- `FetchStatus` type: `"loading" | "success" | "error"`
+- Initial state: `loading` (no hardcoded data shown immediately)
+- `AbortController` with `FETCH_TIMEOUT_MS = 8000` — prevents infinite loading
+- Cleanup on unmount cancels in-flight fetch
+- `retryKey` state increments on retry → re-triggers `useEffect`
+- `AnimatePresence mode="wait"` for clean skeleton → carousel / error transitions
+- **Skeleton (`SkeletonTrack`):** 4 cards, staggered Framer Motion entry, `.skeleton-shimmer` CSS class (moving gradient, `prefers-reduced-motion` disables animation)
+- **Error state (`ErrorState`):** `ServerCrash` icon; title "Supabase left us on read."; quote "API response time: ∞ms. Even behavioural design can't fix server latency."; `↻ Try again` button; `role="alert"` for screen readers
+
+**AC:**
+- ✅ Skeleton shown immediately on load and on retry
+- ✅ Skeleton shimmer uses design tokens (`--page-border`, `--page-surface`)
+- ✅ `prefers-reduced-motion: reduce` → static skeleton (no animation)
+- ✅ Fetch timeout after 8s triggers error state
+- ✅ Retry button re-fetches and can recover to success state
+- ✅ Unmounting during fetch does not cause "state update on unmounted component" warning
+- ✅ Error copy is on-brand and memorable
+- ✅ `npx tsc --noEmit` passes with 0 errors
 
 ---
 

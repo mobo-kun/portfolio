@@ -184,10 +184,35 @@ All values below must be defined in `tailwind.config.ts`. **No hardcoded hex val
 - Section-wide mouse-following glow (cyan, `blur-[120px]`, covers both carousel and text columns)
 
 #### Recommendations Carousel
-- Infinitely auto-scrolling marquee (Framer Motion)
-- Cards: person image, name, quote excerpt
-- Clicking image or name opens LinkedIn URL in new tab
-- Pause on hover
+
+**Data source:** `GET /api/recommendations` (Supabase, 60s ISR). Falls back to `HARDCODED_RECOMMENDATIONS` if Supabase returns empty. Never leaves the user without content.
+
+**Fetch lifecycle (3 states):**
+- `loading` — 4 shimmer skeleton cards animate in with staggered delays. Shimmer respects `prefers-reduced-motion`. `AbortController` with 8s timeout prevents infinite loading.
+- `success` — Infinite auto-scrolling marquee, pauses on hover. On mobile, touch-triggered hover pause resets when opening the modal.
+- `error` — `ServerCrash` icon, copy: *"Supabase left us on read. API response time: ∞ms. Even behavioural design can't fix server latency."* + `↻ Try again` button (increments `retryKey` to re-trigger fetch).
+
+**Read-more modal / bottom sheet:**
+- Cards: quote clamped to 4 lines; if `quote.length > 120` chars a `Read full →` text button appears
+- Mobile (`<768px`) — bottom sheet, slides up from bottom with `stiffness:480, damping:38` spring
+  - Drag-to-dismiss: `drag="y"`, `dragConstraints={{top:0,bottom:0}}`, `dragElastic={{bottom:0.4}}` — dismiss on offset > 100px or velocity > 400px/s, springs back otherwise
+  - Scroll body: `touch-action:pan-y` overrides Framer Motion's `pan-x` so content scrolls natively
+  - `useScrollLock` hook: `body { position:fixed; top:-scrollY }` pattern — works on iOS Safari (plain `overflow:hidden` on body does not)
+- Desktop (`≥768px`) — centred modal, `perspective:1200px` on container, `rotateX:5→0` 3-D flip-up entry
+
+**Transitions ("signal materialising" concept):**
+- Backdrop: `backdrop-blur-md` deepens on open
+- Bottom sheet: cyan edge shimmer sweeps left-to-right (`scaleX:0→1`) after sheet settles; drag handle pill scales in; content fades up — all with expo-out easing `[0.16,1,0.3,1]`
+- Desktop modal: `rotateX:5→0` flip + scale + y spring; animated top shimmer; content stagger
+- Exit (sheet): `stiffness:560` — crisp and decisive
+
+**Resilience:**
+- `AbortController` + 8s timeout on fetch
+- Cleanup on unmount prevents state update on dead component
+- `Avatar` component: `onError → AvatarPlaceholder` for broken image URLs
+- Empty Supabase response → silent fallback to hardcoded (no error shown)
+
+**Named elements (`data-slot`):** `bottom-sheet-overlay`, `bottom-sheet`, `bottom-sheet-header`, `bottom-sheet-drag-handle`, `bottom-sheet-close`, `bottom-sheet-body`, `modal`, `modal-close`, `marquee-track`
 
 #### About Me
 - Split layout: Behdad's photo left, bio paragraph right
@@ -329,6 +354,10 @@ Every interactive element must use Framer Motion `motion.*` tags:
 | Images inside cards | Parent `overflow-hidden` + child `hover:scale-105 duration-500 ease-out` |
 | Page transitions | Framer Motion `AnimatePresence` wrapping route changes |
 | Marquee/carousel | `framer-motion` infinite x-translate loop |
+| Bottom sheet open | Spring slide-up `stiffness:480 damping:38`; cyan shimmer sweep; content stagger |
+| Bottom sheet close | Snap-down `stiffness:560`; body scroll restored via `useScrollLock` cleanup |
+| Desktop modal open | `rotateX:5→0` 3-D flip + scale + y; `perspective:1200px` on container; shimmer sweep |
+| Skeleton loading | CSS shimmer gradient `200% backgroundSize`, `skeleton-shimmer` keyframe; `prefers-reduced-motion` disables animation |
 | Kudos heart | Scale pop + fill color swap on click |
 
 ---
@@ -353,9 +382,15 @@ NOTION_API_KEY=
 NOTION_DATABASE_ID=
 KV_REST_API_URL=
 KV_REST_API_TOKEN=
+
+# Supabase — recommendations table
+SUPABASE_URL=
+SUPABASE_SERVICE_ROLE_KEY=
 ```
 
 All managed via Vercel project settings. Never committed to the repository.
+
+`SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are server-only (API route). The Supabase client is instantiated in `src/lib/supabase.ts` using the service-role key, which must never be exposed to the browser.
 
 ---
 
