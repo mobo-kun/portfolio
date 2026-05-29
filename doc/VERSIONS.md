@@ -19,6 +19,7 @@
 
 | Version | Commit | Date | What changed |
 |---------|--------|------|--------------|
+| **v0.9.0** | TBD | 2026-05-29 | **About Me v2** — cyberpunk net canvas (node grid, adjacency-map lights, radial glow), new profile photo (`about-behdad.jpg`, `rounded-3xl` frame), Pointer Events API (fixes mobile touch-freeze bug), lerp smoothing (position + glow in/out), gradient faders (no section borders, Recommendations→AboutMe pinch-dissolve), mobile button layout (Contact Me full-width, LinkedIn+WhatsApp row) |
 | **v0.8.0** | `c1d5af3` | 2026-05-29 | **Recommendations polish** — mobile responsive fixes (`overflow-x` on html/body, CurrentExperience glow contained), `useScrollLock` (iOS Safari body-scroll fix), bottom sheet drag-to-dismiss, fancy transitions (3-D flip modal, cyan shimmer sweep, content stagger), skeleton loading + CSS shimmer, error state + retry, AbortController 8s timeout, `Avatar` `onError` fallback, `data-slot` element naming, VERSIONS.md → `doc/` |
 | **v0.7.0** | `c30d2b0` | 2026-05-28 | **Recommendations → Supabase** — API route + server-side client, 60s ISR cache, hardcoded fallback, `@supabase/supabase-js` installed |
 | v0.6.0 | `0d6b861` | 2026-05-27 | **Skill carousel v6** — vertical cylinder drum-roll, invisible circular wrap via `animate().then()`, drag/swipe (mouse + touch), 3-D tilt, section-wide mouse glow, 5/7 desktop split |

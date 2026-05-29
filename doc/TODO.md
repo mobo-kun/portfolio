@@ -481,17 +481,33 @@
 ### [x] 6.1 — About Me Section
 
 **Steps:**
-- Split layout: `next/image` profile photo left (`/public/profile.webp`), bio right
+- Split layout: `next/image` profile photo left (`/public/about-behdad.jpg`), bio right
+- Photo in `rounded-3xl` (max rounded rectangle), no background surface — image fills frame directly
 - Stack to single column on mobile
 - Bio text from PRD bio paragraph
 - Three buttons: `Contact Me` → `/contact`, `LinkedIn` (new tab), `WhatsApp` (new tab)
 - All buttons: `whileHover` + `whileTap`
+- **Mobile button layout:** Contact Me full-width on top row; LinkedIn + WhatsApp side-by-side below (`flex gap-3 md:contents` pattern)
+- **Cyberpunk net canvas background:** `CyberpunkNet` component using Canvas 2D API — grid nodes, edge connections (right + down + diagonal), radial glow following mouse/touch, moving lights traversing node-to-node adjacency map
+- **Pointer Events API:** unified `pointerenter/move/down/up/cancel/leave` replacing separate mouse+touch handlers; `pointerType` check separates paths — eliminates mobile double-fire bug
+- **Lerp system:** position (LERP_POS=0.10), fast appear (LERP_IN=0.07), slow dreamy release (LERP_OUT=0.032)
+- **Section faders:** gradient overlays top + bottom (`h-32`, `from-bg to-transparent`) connect section smoothly to neighbours; `overflow-hidden` keeps net clipped
+- **Recommendations bottom fader:** `from-transparent to-bg` gradient inside Recommendations section creates pinch-dissolve effect at the boundary
 
 **AC:**
-- Real photo renders (not placeholder) using `next/image`
-- 50/50 layout on desktop, stacked on mobile
-- All 3 buttons link to correct destinations
-- Buttons animate on hover and tap
+- ✅ Real photo renders using `next/image` from `/public/about-behdad.jpg`
+- ✅ Photo frame is `rounded-3xl` rectangle, no bg-surface container visible
+- ✅ 50/50 layout on desktop, stacked on mobile
+- ✅ All 3 buttons link to correct destinations
+- ✅ Buttons animate on hover and tap
+- ✅ Mobile: Contact Me full-width top, LinkedIn + WhatsApp side-by-side below
+- ✅ Cyberpunk net animates on `requestAnimationFrame` with moving lights
+- ✅ Mouse hover triggers radial glow with lerp smoothing
+- ✅ Touch tap shows glow; releases cleanly — no freeze bug (Pointer Events API)
+- ✅ Top/bottom gradient faders — no hard section borders; Recommendations dissolves smoothly into About Me
+- ✅ Net stays clipped within section (`overflow-hidden`)
+- ✅ Net visible in both light mode (cyan-600 nodes) and dark mode (cyan-400 nodes)
+- ✅ `npx tsc --noEmit` passes with 0 errors
 
 ---
 

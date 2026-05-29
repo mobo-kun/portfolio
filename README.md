@@ -1,6 +1,6 @@
 # Behdad Morsalpoor — Personal Portfolio
 
-> **Live → [behdad.vercel.app](https://behdad.vercel.app)** · v0.8.0
+> **Live → [behdad.vercel.app](https://behdad.vercel.app)** · v0.9.0
 
 A personal portfolio for **Behdad Morsalpoor**, Senior Product Design Lead specialising in Fintech, Crypto, and behavioural design. Built entirely with Claude.
 
@@ -14,7 +14,7 @@ A personal portfolio for **Behdad Morsalpoor**, Senior Product Design Lead speci
 | **Case Studies (Bento)** | ✅ Live | Asymmetric 5-tile grid, 3D tilt, responsive images |
 | **Current Experience** | ✅ Live | Vertical skill carousel (cylinder drum-roll), role details |
 | **Recommendations** | ✅ Live | Supabase-backed marquee, read-more modal / bottom sheet |
-| **About Me** | ✅ Live | Bio, contact buttons |
+| **About Me** | ✅ Live | Cyberpunk net canvas, new photo, mobile button layout, gradient faders |
 | **CV** | ⏳ Planned | Phase 8 |
 | **Case Study Pages** | ⏳ Planned | Phase 7 (Notion CMS) |
 | **Blog** | ⏳ Planned | Phase 11 |

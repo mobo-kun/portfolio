@@ -663,6 +663,12 @@ export default function RecommendationsCarousel() {
           )}
 
         </AnimatePresence>
+
+        {/* Bottom fader — feathers the section edge into About Me below */}
+        <div
+          aria-hidden="true"
+          className="absolute bottom-0 inset-x-0 h-32 pointer-events-none z-20 bg-gradient-to-b from-transparent to-bg"
+        />
       </section>
 
       {/* Modal / bottom-sheet — rendered outside section so it overlays everything */}

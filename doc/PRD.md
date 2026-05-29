@@ -215,8 +215,39 @@ All values below must be defined in `tailwind.config.ts`. **No hardcoded hex val
 **Named elements (`data-slot`):** `bottom-sheet-overlay`, `bottom-sheet`, `bottom-sheet-header`, `bottom-sheet-drag-handle`, `bottom-sheet-close`, `bottom-sheet-body`, `modal`, `modal-close`, `marquee-track`
 
 #### About Me
-- Split layout: Behdad's photo left, bio paragraph right
-- Buttons: `Contact Me` · `LinkedIn` · `WhatsApp`
+
+**Layout:** Split two-column (photo left, bio + buttons right); stacks to single column on mobile.
+
+**Photo:** `next/image` from `/public/about-behdad.jpg`. Frame is `rounded-3xl` (max rounded rectangle), no background surface — raw image fills the frame. Framer Motion `whileInView` entrance on the photo column.
+
+**Bio:** Headline "Design with intention." + paragraph bio. `ABOUT ME` section label in `text-cyan-500`.
+
+**Buttons:**
+- `Contact Me` → `/contact` — primary cyan fill, full-width on mobile
+- `LinkedIn` → external profile URL, new tab
+- `WhatsApp` → `wa.me/` URL, new tab
+- Mobile layout: Contact Me full row; LinkedIn + WhatsApp side-by-side below using `flex gap-3 md:contents` pattern
+- All buttons: `whileHover={{ scale: 1.02 }}` + `whileTap={{ scale: 0.98 }}`
+
+**Cyberpunk Net (`CyberpunkNet` component):**
+- Canvas 2D animation drawn on `requestAnimationFrame` loop
+- Grid nodes with jitter, edge connections (right, down, diagonal — denser net topology)
+- Adjacency map enables node-to-node light traversal (lights follow connected edges)
+- **Mouse/touch interaction:** radial glow follows cursor/finger with lerp smoothing
+  - Position lerp: LERP_POS = 0.10 (slight drag behind cursor)
+  - Glow fade in: LERP_IN = 0.07 (fast appear)
+  - Glow fade out: LERP_OUT = 0.032 (slow dreamy release)
+- **Pointer Events API:** unified handlers using `pointerType` to separate mouse vs. touch — eliminates mobile double-fire bug where browser synthesises `mousemove` after `touchend`
+- **Moving lights:** dots traverse node-to-node via adjacency map, medium contrast, lower opacity than grid nodes
+- **Theme aware:** dark mode uses `rgba(0,188,212,…)` (cyan-400 range); light mode uses `rgb(8,145,178)` (cyan-600) with raised base alphas
+- **DPR-aware canvas:** `Math.min(devicePixelRatio, 2)` for sharp retina rendering
+
+**Section transitions:**
+- No top/bottom border on section
+- Top gradient fader: `h-32`, `from-bg to-transparent` — covers canvas top edge, connects to Recommendations
+- Bottom gradient fader: `h-32`, `from-bg to-transparent` — connects to footer
+- Recommendations section has a matching `from-transparent to-bg` bottom fader creating a pinch-dissolve effect
+- `overflow-hidden` on section keeps canvas clipped
 
 ---
 
