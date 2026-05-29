@@ -105,11 +105,14 @@ function AvatarPlaceholder({ name, size = "md" }: { name: string; size?: "md" | 
 /* ─── Modal / Bottom-sheet ───────────────────────────────────── */
 
 function RecModal({ rec, onClose }: { rec: Recommendation; onClose: () => void }) {
-  const [isMobile, setIsMobile] = useState(false);
+  // Lazy initializer runs synchronously on first render — no useEffect round-trip,
+  // so the correct variant (bottom sheet vs modal) is chosen immediately.
+  const [isMobile, setIsMobile] = useState<boolean>(
+    () => typeof window !== "undefined" && window.innerWidth < 768
+  );
 
   useEffect(() => {
     const check = () => setIsMobile(window.innerWidth < 768);
-    check();
     window.addEventListener("resize", check);
     return () => window.removeEventListener("resize", check);
   }, []);
@@ -136,8 +139,8 @@ function RecModal({ rec, onClose }: { rec: Recommendation; onClose: () => void }
       {/* Quote icon */}
       <Quote size={22} className="text-cyan-500" aria-hidden />
 
-      {/* Full quote — no clamp */}
-      <p className="font-roboto text-sm md:text-base text-text-primary/90 leading-relaxed">
+      {/* Full quote — no clamp, break-words so long text never overflows */}
+      <p className="font-roboto text-sm md:text-base text-text-primary/90 leading-relaxed break-words">
         {rec.quote}
       </p>
 
@@ -194,29 +197,41 @@ function RecModal({ rec, onClose }: { rec: Recommendation; onClose: () => void }
       />
 
       {isMobile ? (
-        /* ── Mobile: bottom sheet slides up ── */
-        <motion.div
-          role="dialog"
-          aria-modal="true"
-          aria-label={`Full recommendation from ${rec.name}`}
-          className="fixed bottom-0 left-0 right-0 z-50 bg-surface border-t border-border-card rounded-t-2xl p-6 pb-10 max-h-[85dvh] overflow-y-auto"
-          initial={{ y: "100%" }}
-          animate={{ y: 0 }}
-          exit={{ y: "100%" }}
-          transition={{ type: "spring", stiffness: 340, damping: 36 }}
-        >
-          {/* Drag handle */}
-          <div className="w-10 h-1 rounded-full bg-border-card mx-auto mb-6" />
-          {/* Close button */}
-          <button
-            onClick={onClose}
-            aria-label="Close"
-            className="absolute top-5 right-5 w-8 h-8 flex items-center justify-center rounded-full bg-surface border border-border-card text-text-secondary hover:text-text-primary hover:border-cyan-500/50 transition-colors"
+        /* ── Mobile: bottom sheet slides up ──
+         * Outer div: fixed full-screen, overflow-hidden clips any bleed,
+         * flex-col justify-end pushes sheet to bottom — no width issues.
+         * Inner motion.div: animates y only, never wider than 100vw.
+         * Scrollable content is a separate inner div so overflow-y-auto
+         * doesn't fight the transform. ── */
+        <div className="fixed inset-0 z-50 flex flex-col justify-end overflow-hidden pointer-events-none">
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label={`Full recommendation from ${rec.name}`}
+            className="pointer-events-auto w-full bg-surface border-t border-border-card rounded-t-2xl overflow-hidden relative"
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ type: "spring", stiffness: 340, damping: 36 }}
           >
-            <X size={15} />
-          </button>
-          {CardContent}
-        </motion.div>
+            {/* ── Fixed header: drag handle + close — never scrolls away ── */}
+            <div className="flex items-center justify-center pt-4 pb-2 px-6 relative flex-shrink-0">
+              <div className="w-10 h-1 rounded-full bg-border-card" />
+              <button
+                onClick={onClose}
+                aria-label="Close"
+                className="absolute right-4 w-8 h-8 flex items-center justify-center rounded-full bg-surface border border-border-card text-text-secondary hover:text-text-primary hover:border-cyan-500/50 transition-colors"
+              >
+                <X size={15} />
+              </button>
+            </div>
+
+            {/* ── Scrollable content ── */}
+            <div className="max-h-[78dvh] overflow-y-auto overflow-x-hidden px-6 pt-3 pb-12">
+              {CardContent}
+            </div>
+          </motion.div>
+        </div>
       ) : (
         /* ── Desktop: centred modal expands from centre ── */
         <div className="fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-none">
